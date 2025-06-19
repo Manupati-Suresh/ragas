@@ -1,0 +1,21 @@
+RAG Pipeline Evaluation Summary
+==================================================
+
+Dataset Information:
+- Number of samples: 30
+- Evaluation date: 2025-06-18 21:39:33
+
+Average Metric Scores:
+- Context Relevance: 0.5320 (±0.0820)
+  How relevant retrieved contexts are to the question
+- Answer Relevance: 0.7327 (±0.0667)
+  How relevant the answer is to the question
+- Context Precision: 0.5727 (±0.1557)
+  Precision of retrieved contexts
+- Context Recall: 0.7318 (±0.0552)
+  Recall of retrieved contexts
+- Faithfulness: 0.5844 (±0.0501)
+  How faithful the answer is to the contexts
+
+Overall RAG Performance Score: 0.6307
+Performance Level: Fair
