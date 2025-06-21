@@ -1,6 +1,6 @@
 # RAG Pipeline Evaluation Report: LLM Augmentation and BM25 Hybrid Search Implementation
 
-**Author:** Manus AI  
+**Author:** Suresh 
 **Date:** June 17, 2025  
 **Version:** 1.0
 
