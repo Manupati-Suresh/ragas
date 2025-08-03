@@ -2,8 +2,15 @@
 import streamlit as st
 import pandas as pd
 import pickle
+import os
 
 st.title("🩺 Diabetes Prediction")
+
+# Check if model files exist, if not, train the model
+if not os.path.exists("logistic_model.pkl") or not os.path.exists("scaler.pkl"):
+    with st.spinner("Training model for first time... This may take a moment."):
+        exec(open("train_model.py").read())
+    st.success("Model trained successfully!")
 
 # Load model and scaler
 model = pickle.load(open("logistic_model.pkl", "rb"))
