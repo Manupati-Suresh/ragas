@@ -19,27 +19,45 @@ import matplotlib.pyplot as plt
 from pathlib import Path
 import sys
 
-# Import custom modules
-from config import MODEL_CONFIG, UI_CONFIG, FEATURE_CONFIG, VALIDATION_CONFIG
-from utils import (
-    validate_medical_inputs, get_risk_interpretation, get_bmi_category,
-    get_age_group, get_glucose_status, create_radar_chart, create_risk_gauge,
-    generate_recommendations, calculate_risk_factors, format_medical_value
-)
-from data_analysis import DataAnalyzer, display_data_analysis_page
-from model_explainer import ModelExplainer, display_model_explanation_page
-
-# Configure warnings and logging
+# Configure warnings and logging for Streamlit Cloud
 warnings.filterwarnings('ignore')
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.FileHandler('app.log'),
-        logging.StreamHandler(sys.stdout)
-    ]
-)
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
+
+# Import custom modules with error handling for Streamlit Cloud
+try:
+    from config import MODEL_CONFIG, UI_CONFIG, FEATURE_CONFIG, VALIDATION_CONFIG
+    from utils import (
+        validate_medical_inputs, get_risk_interpretation, get_bmi_category,
+        get_age_group, get_glucose_status, create_radar_chart, create_risk_gauge,
+        generate_recommendations, calculate_risk_factors, format_medical_value
+    )
+    from data_analysis import DataAnalyzer, display_data_analysis_page
+    from model_explainer import ModelExplainer, display_model_explanation_page
+except ImportError as e:
+    st.error(f"Error importing modules: {e}")
+    st.info("Some advanced features may not be available. The basic prediction functionality will still work.")
+    
+    # Fallback configurations
+    class FallbackConfig:
+        def __init__(self):
+            self.page_title = "Diabetes Risk Predictor"
+            self.page_icon = "🩺"
+            self.layout = "wide"
+    
+    UI_CONFIG = FallbackConfig()
+    
+    # Fallback functions
+    def validate_medical_inputs(inputs):
+        return []
+    
+    def get_risk_interpretation(prob):
+        if prob < 0.3:
+            return "Low Risk", "Low diabetes risk detected.", "🟢"
+        elif prob < 0.6:
+            return "Moderate Risk", "Moderate diabetes risk detected.", "🟡"
+        else:
+            return "High Risk", "High diabetes risk detected.", "🔴"
 
 # Page configuration with enhanced settings
 st.set_page_config(
